@@ -68,4 +68,4 @@ This will start:
 
 ## Flows
 
-The flows used in the lessons can be found in the `../flows` directory. You can import these YAML files directly into Kestra.
+The flows used in the lessons can be found in the [`flows`](../flows) directory. You can import these YAML files directly into Kestra.

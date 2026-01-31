@@ -1,0 +1,29 @@
+datasources:
+  postgres:
+    url: jdbc:postgresql://${KESTRA_POSTGRES_HOST}:5432/${KESTRA_POSTGRES_DB}
+    driverClassName: org.postgresql.Driver
+    username: ${KESTRA_POSTGRES_USER}
+    password: ${KESTRA_POSTGRES_PASSWORD}
+
+kestra:
+  server:
+    basicAuth:
+      username: ${KESTRA_ADMIN_USERNAME}
+      password: ${KESTRA_ADMIN_PASSWORD}
+  repository:
+    type: postgres
+  storage:
+    type: local
+    local:
+      basePath: "/app/storage"
+  queue:
+    type: postgres
+  tasks:
+    tmpDir:
+      path: "/tmp/kestra-wd/tmp"
+  url: "http://localhost:8080"
+  ai:
+    type: gemini
+    gemini:
+      model-name: gemini-2.5-flash
+      api-key: ${GEMINI_API_KEY}

@@ -1,0 +1,89 @@
+services:
+  pg-database:
+    image: postgres:18
+    container_name: ${POSTGRES_HOST:-pg-database}
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - ny_taxi_postgres_data:/var/lib/postgresql
+    networks:
+      - pg-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    env_file:
+      - .env
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+    ports:
+      - "${PGADMIN_PORT:-8085}:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - pg-network
+
+  kestra-database:
+    image: postgres:18
+    container_name: ${KESTRA_POSTGRES_HOST:-kestra-database}
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${KESTRA_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${KESTRA_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${KESTRA_POSTGRES_DB}
+    ports:
+      - "${KESTRA_POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - kestra_postgres_data:/var/lib/postgresql
+    networks:
+      - pg-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+  kestra:
+    image: kestra/kestra:v1.1
+    pull_policy: always
+    container_name: kestra
+    env_file:
+      - .env
+    # Note that this setup with a root user is intended for development purpose.
+    # Our base image runs without root, but the Docker Compose implementation needs root to access the Docker socket
+    # To run Kestra in a rootless mode in production, see: https://kestra.io/docs/installation/podman-compose
+    user: "root"
+    command: server standalone --config /etc/config/kestra-configuration.yaml
+    ports:
+      - "${KESTRA_PORT:-8080}:8080"
+      - "${KESTRA_METRICS_PORT:-8081}:8081"
+    volumes:
+      - kestra_data:/app/storage
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/kestra-wd:/tmp/kestra-wd
+      - ./kestra-configuration.yaml:/etc/config/kestra-configuration.yaml
+    networks:
+      - pg-network
+    depends_on:
+      kestra-database:
+        condition: service_started
+
+volumes:
+  ny_taxi_postgres_data:
+  pgadmin_data:
+  kestra_postgres_data:
+  kestra_data:
+
+
+networks:
+  pg-network:
+    name: pg-network
+    driver: bridge

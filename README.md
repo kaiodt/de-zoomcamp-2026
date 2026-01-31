@@ -5,4 +5,4 @@ This repository contains the materials and homework assignments for the [Data En
 ## Course Structure
 
 - [Module 1: Containerization and Infrastructure as Code](./01-docker-terraform) (Docker, Terraform)
-
+- [Module 2: Workflow Orchestration](./02-workflow-orchestration) (Kestra)

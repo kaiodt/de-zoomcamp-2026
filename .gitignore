@@ -3,6 +3,7 @@
 
 ### Credentials ###
 keys/
+service-account.json
 
 ### Python ###
 # Byte-compiled / optimized / DLL files

@@ -5,6 +5,12 @@
 keys/
 service-account.json
 
+### dbt ###
+target/
+dbt_packages/
+logs/
+data/
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/

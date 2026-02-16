@@ -11,6 +11,9 @@ dbt_packages/
 logs/
 data/
 
+### DuckDB ###
+*.duckdb
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/

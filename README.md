@@ -8,3 +8,4 @@ This repository contains the materials and homework assignments for the [Data En
 - [Module 2: Workflow Orchestration](./02-workflow-orchestration) (Kestra)
 - [Module 3: Data Warehouse](./03-data-warehouse) (BigQuery)
 - [Module 4: Analytics Engineering](./04-analytics-engineering) (dbt, DuckDB)
+- [Module 5: Data Platforms](./05-data-platforms) (Bruin, DuckDB)

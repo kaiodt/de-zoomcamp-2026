@@ -13,6 +13,7 @@ data/
 
 ### DuckDB ###
 *.duckdb
+*.db
 
 ### Bruin ###
 .bruin/
@@ -232,3 +233,6 @@ terraform.rc
 .terraform.lock.hcl
 
 # End of https://www.toptal.com/developers/gitignore/api/python,terraform
+
+logs/runs
+logs/*.log
